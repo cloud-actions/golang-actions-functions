@@ -1,0 +1,9 @@
+{
+	"version": "2.0",
+	"httpWorker": {
+		"description": {
+			"defaultExecutablePath": "bin/hello-gopher_windows.exe",
+			"defaultWorkerPath": ""
+		}
+	}
+}
