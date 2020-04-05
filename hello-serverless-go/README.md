@@ -6,7 +6,7 @@ cd hello-serverless-go/
 
 # build & copy
 cd ../hello-gopher/
-source build.sh
+source build-local.sh
 cd ../hello-serverless-go/
 
 # run
