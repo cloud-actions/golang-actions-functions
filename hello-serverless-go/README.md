@@ -33,7 +33,7 @@ func settings add AzureWebJobsStorage $STORAGE_CONNECTION_STRING
 
 ## deploy
 
-See: [AZURE-FUNCTIONS.md](AZURE-FUNCTIONS.md#deploy)
+See: [AZURE-FUNCTIONS-LINUX.md](AZURE-FUNCTIONS-LINUX.md#deploy)
 
 ## test
 ```bash
