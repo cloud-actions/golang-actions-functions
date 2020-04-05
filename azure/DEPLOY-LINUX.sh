@@ -10,7 +10,7 @@ SCOPE="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}"
 RANDOM_STR=$(echo -n "$SCOPE" | shasum | head -c 6)
 STORAGE_NAME="storage${RANDOM_STR}"
 FUNCTION_NAME="functions${RANDOM_STR}"
-CREATE_IF_EXISTS="false"
+CREATE_IF_EXISTS="true"
 
 echo "RANDOM_STR: {$RANDOM_STR}"
 
