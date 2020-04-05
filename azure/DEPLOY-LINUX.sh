@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # variables
-RESOURCE_GROUP='200200-hello-gopher'
+RESOURCE_GROUP='200300-hello-gopher'
 LOCATION='eastus'
 SUBSCRIPTION_ID=$(az account show | jq -r .id)
 SCOPE="/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RESOURCE_GROUP}"
@@ -32,8 +32,9 @@ if [[ "null" == "$TMP" || $CREATE_IF_EXISTS == "true" ]]; then
     echo "az functionapp create..."
     az functionapp create -g $RESOURCE_GROUP -s $STORAGE_NAME -n $FUNCTION_NAME \
         --consumption-plan-location $LOCATION \
-        --os-type Windows \
-        --runtime dotnet \
+        --os-type Linux \
+        --runtime python \
+        --functions-version 3 \
         > /dev/null
 
     echo "az functionapp appsettings..."
@@ -41,9 +42,8 @@ if [[ "null" == "$TMP" || $CREATE_IF_EXISTS == "true" ]]; then
         --settings "FUNCTIONS_EXTENSION_VERSION=~3" \
         > /dev/null
 
-    echo "az functionapp config..."
-    az functionapp config set -g $RESOURCE_GROUP -n $FUNCTION_NAME \
-        --use-32bit-worker-process false \
+    az functionapp config appsettings set -g $RESOURCE_GROUP -n $FUNCTION_NAME \
+        --settings "WEBSITE_MOUNT_ENABLED=1" \
         > /dev/null
 else
     echo "functionapp exists..."
@@ -51,12 +51,12 @@ fi
 
 echo "build binary..."
 cd hello-gopher/
-source build-container.sh
+source build-container-latest.sh
 cd ..
 
 echo "deploy function..."
 cd hello-serverless-go/
-cp host.windows.json host.json
+cp host.linux.json host.json
 source deploy.sh
 cd ..
 

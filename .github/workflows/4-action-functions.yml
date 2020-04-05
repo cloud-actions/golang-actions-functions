@@ -16,10 +16,10 @@ jobs:
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: bash DEPLOY.sh
+    - name: bash DEPLOY-LINUX.sh
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         GITHUB_SHA: ${{ github.sha }}
       run: |
         cd $GITHUB_WORKSPACE/
-        bash azure/DEPLOY.sh
+        bash azure/DEPLOY-LINUX.sh
