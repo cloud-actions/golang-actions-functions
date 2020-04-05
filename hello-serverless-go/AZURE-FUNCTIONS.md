@@ -42,5 +42,4 @@ RANDOM_STR='14f0ce'
 FUNCTION_NAME="functions${RANDOM_STR}"
 cp host.windows.json host.json
 source deploy.sh
-cp host.linux.json host.json
 ```
