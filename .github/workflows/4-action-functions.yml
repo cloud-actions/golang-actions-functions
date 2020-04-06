@@ -22,4 +22,4 @@ jobs:
         GITHUB_SHA: ${{ github.sha }}
       run: |
         cd $GITHUB_WORKSPACE/
-        bash azure/DEPLOY-LINUX.sh
+        source azure/DEPLOY-LINUX.sh
