@@ -3,9 +3,9 @@
 echo "RESOURCE_GROUP: ${RESOURCE_GROUP}"
 echo "FUNCTION_NAME: ${FUNCTION_NAME}"
 
-FILE_NAME='_/deploy.zip'
-
 mkdir -p _/
+
+FILE_NAME='_/deploy.zip'
 zip -r $FILE_NAME .
 
 export AZURE_STORAGE_CONNECTION_STRING=$(az functionapp config appsettings list -g $RESOURCE_GROUP -n $FUNCTION_NAME | jq -r '.[] | select(.name == "AzureWebJobsStorage").value')

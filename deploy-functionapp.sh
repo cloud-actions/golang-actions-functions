@@ -4,10 +4,12 @@ echo "RESOURCE_GROUP: ${RESOURCE_GROUP}"
 echo "FUNCTION_NAME: ${FUNCTION_NAME}"
 
 mkdir -p _/
-zip -r _/deploy.zip .
+
+FILE_NAME='_/deploy.zip'
+zip -r $FILE_NAME .
 
 az functionapp deployment source config-zip \
     -g $RESOURCE_GROUP -n $FUNCTION_NAME \
-    --src _/deploy.zip
+    --src $FILE_NAME
 
-rm _/deploy.zip
+rm $FILE_NAME
