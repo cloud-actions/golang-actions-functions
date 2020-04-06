@@ -1,3 +1,4 @@
 **/_/*
+bin/*
 local.settings.json
 local.settings.live.json
