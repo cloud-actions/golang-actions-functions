@@ -28,6 +28,9 @@ func run() error {
 	}
 	srv := NewHTTPServer(listenAddr)
 	srv.serverName = "hello-gopher"
+	if val := os.Getenv("SERVER_NAME"); val != "" {
+		srv.serverName = val
+	}
 	AddFunctionHandlers(srv)
 	return srv.Start()
 }
@@ -62,7 +65,8 @@ func (s *HTTPServer) Start() error {
 
 func (s *HTTPServer) Routes() {
 	s.router.HandleFunc("/", s.httpEcho())
-	s.router.HandleFunc("/healthz", s.httpEcho())
+	s.router.HandleFunc("/healthz", s.httpName())
+	s.router.HandleFunc("/echoz", s.httpEcho())
 }
 
 func (s *HTTPServer) decode(w http.ResponseWriter, r *http.Request, v interface{}) error {
@@ -88,6 +92,13 @@ func (s *HTTPServer) httpEcho() http.HandlerFunc {
 		}
 		log.Printf("%s\n", b)
 		fmt.Fprintf(w, "%s", b)
+	}
+}
+
+func (s *HTTPServer) httpName() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%s\n", s.serverName)
+		fmt.Fprintf(w, "%s", s.serverName)
 	}
 }
 
