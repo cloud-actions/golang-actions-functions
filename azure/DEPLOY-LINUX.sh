@@ -12,7 +12,7 @@ STORAGE_NAME="storage${RANDOM_STR}"
 FUNCTION_NAME="functions${RANDOM_STR}"
 CREATE_IF_EXISTS="true"
 
-echo "RANDOM_STR: {$RANDOM_STR}"
+echo "RANDOM_STR: ${RANDOM_STR}"
 
 TMP=$(az storage account list -g $RESOURCE_GROUP | jq '.[].name | index("'$STORAGE_NAME'")')
 
