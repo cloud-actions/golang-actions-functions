@@ -56,5 +56,5 @@ echo "deploy function..."
 cp host.linux.json host.json
 source deploy-storage.sh
 
-# output URL, etc...
-echo "Functions deployed to: https://${FUNCTION_NAME}.azurewebsites.net/"
+echo "curl https://${FUNCTION_NAME}.azurewebsites.net/api/healthz"
+curl -s -o /dev/null -w '%{time_starttransfer}\n' "https://${FUNCTION_NAME}.azurewebsites.net/api/healthz"
