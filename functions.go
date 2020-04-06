@@ -8,7 +8,7 @@ import (
 
 func AddFunctionHandlers(s *HTTPServer) {
 	s.router.HandleFunc("/HttpTrigger", s.httpTrigger())
-	s.router.HandleFunc("/HttpTrigger2", s.httpTrigger2())
+	s.router.HandleFunc("/HttpTriggerPOST", s.httpTrigger2())
 	s.router.HandleFunc("/TimerTrigger", s.timerTrigger())
 }
 
