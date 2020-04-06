@@ -62,6 +62,7 @@ func (s *HTTPServer) Start() error {
 
 func (s *HTTPServer) Routes() {
 	s.router.HandleFunc("/", s.httpEcho())
+	s.router.HandleFunc("/healthz", s.httpEcho())
 }
 
 func (s *HTTPServer) decode(w http.ResponseWriter, r *http.Request, v interface{}) error {
