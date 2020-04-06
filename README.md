@@ -10,32 +10,26 @@ go run .
 go build .
 ```
 
-## build & copy
+## build
 ```bash
 # build locally for linux, mac, windows
-source build-local.sh
+source build.sh
+
+# build with golang:1.14.1 container for linux
+source build-windows.sh
 
 # build with golang:1.13.2 container (for windows/app service)
-source build-container.sh
-
-# build w/o copy
-source build.sh
+source build-windows.sh
 ```
 
-## hello-serverless-go/
+## run
 ```bash
-cd hello-serverless-go/
-
-# build & copy
-cd ../hello-gopher/
-source build-local.sh
-cd ../hello-serverless-go/
-
-# run
 docker run -p 7071:7071 -v ${PWD}:/pwd/ -w /pwd/ --rm -it func:latest bash
 func start
+```
 
-# test
+## test (local)
+```bash
 curl http://localhost:7071/api/HttpTrigger?name=Aaron
 
 echo '{"name": "Aaron"}' | curl -d @- http://localhost:7071/api/HttpTrigger?name=Aaron
@@ -57,7 +51,7 @@ func settings add AzureWebJobsStorage $STORAGE_CONNECTION_STRING
 
 See: [AZURE-FUNCTIONS-LINUX.md](AZURE-FUNCTIONS-LINUX.md#deploy)
 
-## test
+## test (live)
 ```bash
 FUNCTION_NAME='functions9522be'
 
@@ -76,4 +70,3 @@ hey -c 50 -n 2000 "https://${FUNCTION_NAME}.azurewebsites.net/api/HttpTrigger?na
 
 hey -c 100 -n 2000 "https://${FUNCTION_NAME}.azurewebsites.net/api/HttpTrigger?name=Aaron"
 ```
-
