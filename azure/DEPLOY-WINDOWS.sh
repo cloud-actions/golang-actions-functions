@@ -14,9 +14,9 @@ CREATE_IF_EXISTS="false"
 
 echo "RANDOM_STR: {$RANDOM_STR}"
 
-TMP=$(az storage account list -g $RESOURCE_GROUP | jq '.[].name | index("'$STORAGE_NAME'")')
+TMP=$(az storage account list -g $RESOURCE_GROUP | jq '[.[].name | index("'$STORAGE_NAME'")] | length')
 
-if [[ "null" == "$TMP" || $CREATE_IF_EXISTS == "true" ]]; then
+if [[ "$TMP" == "0" || $CREATE_IF_EXISTS == "true" ]]; then
     echo "az storage account create..."
     az storage account create -g $RESOURCE_GROUP -l $LOCATION -n $STORAGE_NAME \
         --kind StorageV2 \
@@ -26,9 +26,9 @@ else
     echo "storage exists..."
 fi
 
-TMP=$(az functionapp list -g $RESOURCE_GROUP | jq '.[].name | index("'$FUNCTION_NAME'")')
+TMP=$(az functionapp list -g $RESOURCE_GROUP | jq '[.[].name | index("'$FUNCTION_NAME'")] | length')
 
-if [[ "null" == "$TMP" || $CREATE_IF_EXISTS == "true" ]]; then
+if [[ "$TMP" == "0" || $CREATE_IF_EXISTS == "true" ]]; then
     echo "az functionapp create..."
     az functionapp create -g $RESOURCE_GROUP -s $STORAGE_NAME -n $FUNCTION_NAME \
         --consumption-plan-location $LOCATION \
