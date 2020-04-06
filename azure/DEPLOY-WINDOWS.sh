@@ -37,8 +37,9 @@ if [[ "$TMP" == "0" || $CREATE_IF_EXISTS == "true" ]]; then
         > /dev/null
 
     echo "az functionapp appsettings..."
-    az functionapp config appsettings set -g $RESOURCE_GROUP -n $FUNCTION_NAME \
-        --settings "FUNCTIONS_EXTENSION_VERSION=~3" \
+    az functionapp config appsettings set -g $RESOURCE_GROUP -n $FUNCTION_NAME --settings \
+        "FUNCTIONS_EXTENSION_VERSION=~3" \
+        "SERVER_NAME=hello-gopher-${GITHUB_SHA}" \
         > /dev/null
 
     echo "az functionapp config..."
@@ -57,4 +58,4 @@ cp host.windows.json host.json
 source deploy-storage.sh
 
 echo "curl https://${FUNCTION_NAME}.azurewebsites.net/api/healthz"
-curl -s -o /dev/null -w '%{time_starttransfer}\n' "https://${FUNCTION_NAME}.azurewebsites.net/api/healthz"
+curl -s -w '%{time_starttransfer}\n' "https://${FUNCTION_NAME}.azurewebsites.net/api/healthz"
