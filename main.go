@@ -3,13 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"os"
-	"strings"
-	"sync"
 )
 
 func main() {
@@ -28,12 +25,6 @@ func run() error {
 	}
 	if val := os.Getenv("FUNCTIONS_HTTPWORKER_PORT"); val != "" {
 		listenAddr = ":" + val
-	}
-	// set by --port
-	for i := 1; i < len(os.Args); i++ {
-		if os.Args[i-1] == "--port" {
-			listenAddr = ":" + os.Args[i]
-		}
 	}
 	srv := NewHTTPServer(listenAddr)
 	srv.serverName = "hello-gopher"
@@ -71,12 +62,6 @@ func (s *HTTPServer) Start() error {
 
 func (s *HTTPServer) Routes() {
 	s.router.HandleFunc("/", s.httpEcho())
-	s.router.HandleFunc("/animal", s.httpIndexWithParam("Python"))
-	s.router.HandleFunc("/api", s.httpHasAPIVersion(s.httpAPI()))
-	s.router.HandleFunc("/greeting", s.httpGreeting())
-	s.router.HandleFunc("/echo", s.httpEcho())
-	s.router.HandleFunc("/host", s.httpHost())
-	s.router.HandleFunc("/template", s.httpTemplate("index.html"))
 }
 
 func (s *HTTPServer) decode(w http.ResponseWriter, r *http.Request, v interface{}) error {
@@ -89,52 +74,6 @@ func (s *HTTPServer) respond(w http.ResponseWriter, r *http.Request, data interf
 	if err != nil {
 		// TODO: handle error better
 		log.Printf("%s\n", err)
-	}
-}
-
-func (s *HTTPServer) httpIndex() http.HandlerFunc {
-	animal := "Gopher"
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %s!", animal)
-	}
-}
-
-func (s *HTTPServer) httpAPI() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		apiVersion := r.FormValue("api-version")
-		fmt.Fprintf(w, "api-version: %s\n", apiVersion)
-	}
-}
-
-func (s *HTTPServer) httpIndexWithParam(animal string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %s!", animal)
-	}
-}
-
-func (s *HTTPServer) httpGreeting() http.HandlerFunc {
-	type request struct {
-		Name string `json:"name"`
-	}
-	type response struct {
-		Greeting string `json:"greeting,omitempty"`
-		Error    string `json:"error,omitempty"`
-	}
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			s.respond(w, r, &response{Error: "Method should be POST"}, http.StatusMethodNotAllowed)
-			return
-		}
-		req := &request{}
-		err := s.decode(w, r, &req)
-		if err != nil {
-			s.respond(w, r, &response{Error: err.Error()}, 500)
-			return
-		}
-		res := &response{
-			Greeting: fmt.Sprintf("Hello %s!", req.Name),
-		}
-		s.respond(w, r, res, 200)
 	}
 }
 
@@ -151,52 +90,9 @@ func (s *HTTPServer) httpEcho() http.HandlerFunc {
 	}
 }
 
-func (s *HTTPServer) httpHost() http.HandlerFunc {
+func (s *HTTPServer) httpIndexWithParam(animal string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if hostname, err := os.Hostname(); err == nil {
-			fmt.Fprintf(w, "Hostname: %s\n", hostname)
-		}
-	}
-}
-
-func (s *HTTPServer) httpTemplate(files ...string) http.HandlerFunc {
-	var (
-		init   sync.Once
-		tpl    *template.Template
-		tplerr error
-	)
-	return func(w http.ResponseWriter, r *http.Request) {
-		init.Do(func() {
-			tpl, tplerr = template.ParseFiles(files...)
-		})
-		if tplerr != nil {
-			http.Error(w, tplerr.Error(), http.StatusInternalServerError)
-			return
-		}
-		// use template
-		items := []string{"the", "quick", "brown", "fox", "jumped"}
-		data := struct {
-			Title  string
-			Items  []string
-			Result string
-		}{
-			Title:  "Title",
-			Items:  items,
-			Result: strings.Join(items, " "),
-		}
-		if err := tpl.Execute(w, data); err != nil {
-			http.Error(w, err.Error(), 500)
-		}
-	}
-}
-
-func (s *HTTPServer) httpHasAPIVersion(h http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.FormValue("api-version") == "" {
-			http.NotFound(w, r)
-			return
-		}
-		h(w, r)
+		fmt.Fprintf(w, "Hello, %s!", animal)
 	}
 }
 
