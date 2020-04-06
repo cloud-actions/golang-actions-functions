@@ -50,15 +50,11 @@ else
 fi
 
 echo "build binary..."
-cd hello-gopher/
-source build-container-latest.sh
-cd ..
+source build-container-linux.sh
 
 echo "deploy function..."
-cd hello-serverless-go/
 cp host.linux.json host.json
 source deploy.sh
-cd ..
 
 # output URL, etc...
 echo "Functions deployed to: https://${FUNCTION_NAME}.azurewebsites.net/"
