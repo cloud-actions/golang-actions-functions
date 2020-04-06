@@ -54,7 +54,7 @@ source build-container-linux.sh
 
 echo "deploy function..."
 cp host.linux.json host.json
-source deploy.sh
+source deploy-storage.sh
 
 # output URL, etc...
 echo "Functions deployed to: https://${FUNCTION_NAME}.azurewebsites.net/"

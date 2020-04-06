@@ -41,5 +41,5 @@ RESOURCE_GROUP='200300-functions'
 RANDOM_STR='691d03'
 FUNCTION_NAME="functions${RANDOM_STR}"
 cp host.linux.json host.json
-source deploy.sh
+source deploy-storage.sh
 ```
