@@ -40,17 +40,18 @@ if [[ "$TMP" == "0" || $CREATE_IF_EXISTS == "true" ]]; then
         > /dev/null
 
     echo "az functionapp appsettings..."
-    az functionapp config appsettings set -g $RESOURCE_GROUP -n $FUNCTION_NAME \
-        --settings "FUNCTIONS_EXTENSION_VERSION=~3" \
-        > /dev/null
-
     az functionapp config appsettings set -g $RESOURCE_GROUP -n $FUNCTION_NAME --settings \
+        "FUNCTIONS_EXTENSION_VERSION=~3" \
         "WEBSITE_MOUNT_ENABLED=1" \
-        "SERVER_NAME=hello-gopher-${GITHUB_SHA}" \
         > /dev/null
 else
     echo "functionapp exists..."
 fi
+
+echo "az functionapp appsettings (SERVER_NAME)..."
+az functionapp config appsettings set -g $RESOURCE_GROUP -n $FUNCTION_NAME --settings \
+    "SERVER_NAME=hello-gopher-${GITHUB_SHA}" \
+    > /dev/null
 
 echo "build binary..."
 source build-container-linux.sh
