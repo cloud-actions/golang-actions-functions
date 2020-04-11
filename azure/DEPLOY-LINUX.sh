@@ -12,7 +12,13 @@ STORAGE_NAME="storage${RANDOM_STR}"
 FUNCTION_NAME="functions${RANDOM_STR}"
 CREATE_IF_EXISTS="false"
 
+# set by actions workflow
+GITHUB_SHA=''
+[[ -z "$GITHUB_SHA" ]] && GITHUB_SHA='test'
+
 echo "RANDOM_STR: ${RANDOM_STR}"
+echo "GITHUB_SHA: ${GITHUB_SHA}"
+return # test
 
 TMP=$(az storage account list -g $RESOURCE_GROUP | jq '[.[].name | index("'$STORAGE_NAME'")] | length')
 
