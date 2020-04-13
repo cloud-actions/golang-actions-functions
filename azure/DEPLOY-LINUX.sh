@@ -58,7 +58,7 @@ source build-container-linux.sh
 
 echo "deploy function..."
 cp host.linux.json host.json
-source deploy-storage.sh
+source azure/DEPLOY-STORAGE.sh
 
 echo "curl https://${FUNCTION_NAME}.azurewebsites.net/api/healthz"
 curl -s -w '\ntime_starttransfer: %{time_starttransfer}\n' "https://${FUNCTION_NAME}.azurewebsites.net/api/healthz"
