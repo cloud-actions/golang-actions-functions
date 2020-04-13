@@ -28,13 +28,6 @@ az functionapp config set -g $RESOURCE_GROUP -n $FUNCTION_NAME \
     --use-32bit-worker-process false
 ```
 
-## empty
-```bash
-az group deployment create --resource-group $RESOURCE_GROUP \
-    --template-uri https://raw.githubusercontent.com/asw101/cloud-snips/master/arm/empty/empty.json \
-    --mode 'Complete'
-```
-
 ## deploy
 ```bash
 RESOURCE_GROUP='200225-functions'

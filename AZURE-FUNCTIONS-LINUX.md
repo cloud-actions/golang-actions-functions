@@ -28,13 +28,6 @@ az functionapp config appsettings set -g $RESOURCE_GROUP -n $FUNCTION_NAME \
     --settings "WEBSITE_MOUNT_ENABLED=1"
 ```
 
-## empty
-```bash
-az group deployment create --resource-group $RESOURCE_GROUP \
-    --template-uri https://raw.githubusercontent.com/asw101/cloud-snips/master/arm/empty/empty.json \
-    --mode 'Complete'
-```
-
 ## deploy
 ```bash
 RESOURCE_GROUP='200300-functions'
