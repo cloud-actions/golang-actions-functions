@@ -3,8 +3,9 @@
 ## 1. Create Azure Service Principal 
 
 Open your local [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) (+[jq](https://stedolan.github.io/jq/download/)), the [Azure Cloud Shell (bash)](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart) or <https://shell.azure.com/> and run the following snippet:
+
 ```bash
-RESOURCE_GROUP='200300-hello-gopher'
+RESOURCE_GROUP='200700-golang-actions-functions'
 LOCATION='eastus'
 SUBSCRIPTION_ID=$(az account show | jq -r .id)
 
