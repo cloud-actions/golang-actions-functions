@@ -16,6 +16,9 @@ BLOB_DELETE="${FUNCTION_NAME}-secondary.zip"
 
 SAS_EXPIRY=$(($(date +"%Y")+10))'-01-01'
 
+echo "az storage container create..."
+az storage container create -n $CONTAINER_NAME
+
 BLOB_UPLOAD_COUNT=$(az storage blob list -c $CONTAINER_NAME | jq '[.[] | select(.name == "'$BLOB_UPLOAD'")] | length')
 if [[ "$BLOB_UPLOAD_COUNT" != "0" ]]; then
     TMP=$BLOB_UPLOAD
@@ -24,8 +27,6 @@ if [[ "$BLOB_UPLOAD_COUNT" != "0" ]]; then
 fi
 
 echo "az storage blob upload (${BLOB_UPLOAD})..."
-
-az storage container create -n $CONTAINER_NAME
 
 az storage blob upload -c $CONTAINER_NAME -n $BLOB_UPLOAD -f $FILE_NAME
 
