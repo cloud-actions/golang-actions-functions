@@ -24,6 +24,9 @@ if [[ "$BLOB_UPLOAD_COUNT" != "0" ]]; then
 fi
 
 echo "az storage blob upload (${BLOB_UPLOAD})..."
+
+az storage container create -n $CONTAINER_NAME
+
 az storage blob upload -c $CONTAINER_NAME -n $BLOB_UPLOAD -f $FILE_NAME
 
 BLOB_URL=$(az storage blob url -c $CONTAINER_NAME -n $BLOB_UPLOAD | jq -r '.')
